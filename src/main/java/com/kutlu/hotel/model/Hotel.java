@@ -1,31 +1,17 @@
 package com.kutlu.hotel.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Entity
-public class Hotel {
+public class Hotel extends BaseModel implements Serializable{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-
+	private static final long serialVersionUID = -5454685628840176412L;
+	
 	private String name;
-	private boolean status;
 
-	public Hotel() {
-
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
+	public Hotel() {}
 
 	public String getName() {
 		return name;
@@ -33,14 +19,6 @@ public class Hotel {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
 	}
 
 }
