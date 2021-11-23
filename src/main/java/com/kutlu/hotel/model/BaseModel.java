@@ -12,6 +12,7 @@ public class BaseModel implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
 	private Long id;
+	
 	private boolean status;
 	
 	public BaseModel() {}

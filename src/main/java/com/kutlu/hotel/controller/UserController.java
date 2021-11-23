@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kutlu.hotel.exception.ResourceNotFoundException;
-import com.kutlu.hotel.model.User;
+import com.kutlu.hotel.model.AdminUser;
 import com.kutlu.hotel.repository.UserRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -29,33 +29,34 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@GetMapping("users")
-	public List<User> getAllUsers() {
+	public List<AdminUser> getAllUsers() {
 		return this.userRepository.findAll();
 	}
 
 	@PostMapping("users")
-	public User createUser(@RequestBody User user) {
+	public AdminUser createUser(@RequestBody AdminUser user) {
 		return userRepository.save(user);
 	}
 
 	@GetMapping("/users/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable Long id) {
-		User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
+	public ResponseEntity<AdminUser> getUserById(@PathVariable Long id) {
+		AdminUser user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
 		return ResponseEntity.ok(user);
 	}
 	
 	@PutMapping("/users/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user){
-		User userDetails = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
+	public ResponseEntity<AdminUser> updateUser(@PathVariable Long id, @RequestBody AdminUser user){
+		AdminUser userDetails = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
 		userDetails.setName(user.getName());
 		userDetails.setMail(user.getMail());
-		User updatedUser = userRepository.save(userDetails);
+		AdminUser updatedUser = userRepository.save(userDetails);
 		return ResponseEntity.ok(updatedUser);
 	}
 	
+	
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id){
-		User userDetails = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
+		AdminUser userDetails = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
 		userRepository.delete(userDetails);
 		//userRepository.deleteById(id);
 		Map<String, Boolean> response = new HashMap<>();
@@ -63,4 +64,11 @@ public class UserController {
 		return ResponseEntity.ok(response);
 	}
 
+	@GetMapping("/users/login")
+	public ResponseEntity<AdminUser> login( @RequestBody AdminUser user) {
+		
+		//Logini buraya ekle daha sonra.
+		return ResponseEntity.ok(user);
+	}
+	
 }
