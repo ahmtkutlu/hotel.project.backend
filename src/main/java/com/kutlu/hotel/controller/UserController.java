@@ -64,11 +64,17 @@ public class UserController {
 		return ResponseEntity.ok(response);
 	}
 
+	
 	@GetMapping("/users/login")
-	public ResponseEntity<AdminUser> login( @RequestBody AdminUser user) {
-		
-		//Logini buraya ekle daha sonra.
-		return ResponseEntity.ok(user);
+	public ResponseEntity<Map<AdminUser, Boolean>> login( @RequestBody AdminUser user) {
+		user = userRepository.login(user.getMail(), user.getPassword());
+		Map<AdminUser, Boolean> response = new HashMap<AdminUser, Boolean>();
+		if(user !=null) {
+			response.put(user, true);
+		} else {
+			response.put(null, false);
+		}
+		return ResponseEntity.ok(response);
 	}
 	
 }

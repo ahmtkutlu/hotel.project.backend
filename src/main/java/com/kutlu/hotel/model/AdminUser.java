@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="admin_user")
 public class AdminUser extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -1578480879950004983L;
