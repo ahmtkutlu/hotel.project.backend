@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder;
 
 	@GetMapping("users")
 	public List<AdminUser> getAllUsers() {
@@ -35,6 +39,7 @@ public class UserController {
 
 	@PostMapping("users")
 	public AdminUser createUser(@RequestBody AdminUser user) {
+		user.setPassword(encoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 
@@ -47,7 +52,7 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	public ResponseEntity<AdminUser> updateUser(@PathVariable Long id, @RequestBody AdminUser user){
 		AdminUser userDetails = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not exist with id : " + id));
-		userDetails.setName(user.getName());
+		userDetails.setUserName(user.getUsername());
 		userDetails.setMail(user.getMail());
 		AdminUser updatedUser = userRepository.save(userDetails);
 		return ResponseEntity.ok(updatedUser);
@@ -61,19 +66,6 @@ public class UserController {
 		//userRepository.deleteById(id);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("result", Boolean.TRUE);
-		return ResponseEntity.ok(response);
-	}
-
-	
-	@GetMapping("/users/login")
-	public ResponseEntity<Map<AdminUser, Boolean>> login( @RequestBody AdminUser user) {
-		user = userRepository.login(user.getMail(), user.getPassword());
-		Map<AdminUser, Boolean> response = new HashMap<AdminUser, Boolean>();
-		if(user !=null) {
-			response.put(user, true);
-		} else {
-			response.put(null, false);
-		}
 		return ResponseEntity.ok(response);
 	}
 	

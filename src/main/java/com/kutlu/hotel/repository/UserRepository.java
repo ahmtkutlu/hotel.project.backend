@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<AdminUser, Long>{
 
 	@Query(value="select * from admin_user where mail = ?1 and password = ?2", nativeQuery = true)
 	AdminUser login(String email, String password);
+	
+	AdminUser findByMail(String mail);
 }
